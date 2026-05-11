@@ -69,11 +69,14 @@
 
 html,
 body {
-  min-height: 100%;
   margin: 0;
+  min-height: 100%;
+  min-height: 100dvh;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -97,12 +100,13 @@ button:disabled {
 }
 
 .appShell {
-  min-height: 100svh;
+  flex: 1;
   display: flex;
-  justify-content: center;
-  background:
-    radial-gradient(circle at 74% 9%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 22%),
-    linear-gradient(135deg, #fbf7f2 0%, var(--bg-primary) 45%, var(--bg-secondary) 100%);
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 48%, var(--bg-secondary) 100%);
 }
 
 .devStepControls {
@@ -149,8 +153,10 @@ button:disabled {
 }
 
 .screen {
-  width: min(100%, 500px);
+  width: 100%;
+  max-width: none;
   min-height: 100svh;
+  min-height: 100dvh;
   padding: var(--space-6);
   position: relative;
   animation: screenIn var(--motion-normal) var(--ease-soft);
@@ -241,7 +247,7 @@ button:disabled {
 
 .screenLight {
   color: var(--text-primary);
-  background: var(--bg-primary);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 48%, var(--bg-secondary) 100%);
   padding-bottom: 104px;
 }
 
@@ -603,7 +609,8 @@ button:disabled {
 }
 
 .quickCheckScreen {
-  width: min(100%, 920px);
+  width: 100%;
+  max-width: none;
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -1046,6 +1053,13 @@ button:disabled {
   text-align: center;
 }
 
+.screen.screenDark.analysisScreen {
+  width: 100%;
+  max-width: none;
+  box-shadow: none;
+  align-self: stretch;
+}
+
 .analysisScreen h2 {
   max-width: 300px;
 }
@@ -1126,17 +1140,16 @@ button:disabled {
 }
 
 .resultDesktop {
-  width: min(100%, var(--layout-max-width));
+  width: 100%;
+  max-width: none;
   min-height: 100svh;
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 356px;
   gap: var(--space-6);
   padding: var(--space-6);
   color: var(--text-primary);
-  background:
-    radial-gradient(circle at 43% 9%, rgba(255, 255, 255, 0.88), transparent 24%),
-    linear-gradient(135deg, #fbf7f2, var(--bg-primary) 58%, var(--bg-secondary));
-  animation: screenIn var(--motion-normal) var(--ease-soft);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 55%, var(--bg-secondary) 100%);
 }
 
 .resultMain,
@@ -1591,6 +1604,65 @@ button:disabled {
   margin-top: var(--space-6);
 }
 
+@keyframes resultBlockFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resultDesktop .resultMain > * {
+  animation: resultBlockFadeIn 1s var(--ease-soft) both;
+}
+
+.resultDesktop .resultMain > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+
+.resultDesktop .resultMain > *:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.resultDesktop .resultMain > *:nth-child(3) {
+  animation-delay: 220ms;
+}
+
+.resultDesktop .resultMain > *:nth-child(4) {
+  animation-delay: 340ms;
+}
+
+.resultDesktop .resultInsight > .lightResultPanel {
+  animation: resultBlockFadeIn 1s var(--ease-soft) both;
+}
+
+.resultDesktop .resultInsight > .lightResultPanel:nth-of-type(1) {
+  animation-delay: 460ms;
+}
+
+.resultDesktop .resultInsight > .lightResultPanel:nth-of-type(2) {
+  animation-delay: 580ms;
+}
+
+.resultDesktop .resultFooter.resultFooterEnd {
+  animation: resultBlockFadeIn 1s var(--ease-soft) both;
+  animation-delay: 700ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resultDesktop .resultMain > *,
+  .resultDesktop .resultInsight > .lightResultPanel,
+  .resultDesktop .resultFooter.resultFooterEnd {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .saveState {
   min-height: 20px;
   color: var(--text-secondary);
@@ -1666,13 +1738,6 @@ button:disabled {
 
 .radarVertex {
   animation: radarLabelIn 520ms var(--ease-soft) both;
-}
-
-.radarVertexDot {
-  fill: var(--bg-elevated);
-  stroke: var(--accent-primary);
-  stroke-width: 2;
-  filter: drop-shadow(0 4px 8px rgba(90, 70, 50, 0.16));
 }
 
 .radarLabel {
@@ -1834,8 +1899,9 @@ button:disabled {
 
 @media (min-width: 860px) {
   .appShell {
-    align-items: center;
-    padding: var(--space-8);
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
   }
 
   .appShell.startShell {
@@ -1844,10 +1910,12 @@ button:disabled {
   }
 
   .screen {
-    width: min(100%, 880px);
-    min-height: min(920px, calc(100svh - 64px));
+    width: 100%;
+    max-width: none;
+    min-height: min(920px, 100svh);
+    min-height: min(920px, 100dvh);
     border-radius: 0;
-    box-shadow: var(--shadow-lg);
+    box-shadow: none;
     overflow: auto;
   }
 
@@ -1858,15 +1926,27 @@ button:disabled {
   }
 
   .screen.contextScreen {
-    width: min(100%, 500px);
+    width: 100%;
+    max-width: none;
     min-height: auto;
-    max-height: calc(100svh - var(--space-8) * 2);
+    max-height: 100svh;
+    max-height: 100dvh;
     overflow-x: hidden;
     overflow-y: auto;
   }
 
   .screen.contextScreen.screenLight {
     padding-bottom: var(--space-6);
+  }
+
+  .screen.screenDark.analysisScreen {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    min-height: min(920px, 100dvh);
+    min-height: min(920px, 100svh);
+    box-shadow: none;
+    border-radius: 0;
   }
 
   .startHeroScreen {

@@ -4,6 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import type { AxisId } from "@/lib/recommendation/types";
 
 const AXIS_ORDER: AxisId[] = ["vascular", "neuro", "barrier", "lesion", "recovery", "damage"];
+/** 결과 화면 블록 페이드인(≈0.46s 지연 + 1s) 이후에 그리기 애니메이션이 보이도록 */
+const RADAR_DRAW_DELAY_MS = 1600;
+const RADAR_DRAW_DURATION_MS = 920;
+
 type SvgTextAnchor = "start" | "middle" | "end";
 
 interface AxisRadarProps {
@@ -24,29 +28,44 @@ export function AxisRadar({ scores, labels }: AxisRadarProps) {
       return;
     }
 
+    let cancelled = false;
     let frameId = 0;
-    let startTime = 0;
-    const duration = 920;
 
-    function animate(timestamp: number) {
-      if (!startTime) {
-        startTime = timestamp;
+    const delayTimer = window.setTimeout(() => {
+      if (cancelled) {
+        return;
       }
 
-      const elapsed = timestamp - startTime;
-      const ratio = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - ratio, 3);
-      setProgress(eased);
+      let startTime = 0;
 
-      if (ratio < 1) {
-        frameId = window.requestAnimationFrame(animate);
+      function animate(timestamp: number) {
+        if (cancelled) {
+          return;
+        }
+
+        if (!startTime) {
+          startTime = timestamp;
+        }
+
+        const elapsed = timestamp - startTime;
+        const ratio = Math.min(elapsed / RADAR_DRAW_DURATION_MS, 1);
+        const eased = 1 - Math.pow(1 - ratio, 3);
+        setProgress(eased);
+
+        if (ratio < 1) {
+          frameId = window.requestAnimationFrame(animate);
+        }
       }
-    }
 
-    setProgress(0);
-    frameId = window.requestAnimationFrame(animate);
+      setProgress(0);
+      frameId = window.requestAnimationFrame(animate);
+    }, RADAR_DRAW_DELAY_MS);
 
-    return () => window.cancelAnimationFrame(frameId);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(delayTimer);
+      window.cancelAnimationFrame(frameId);
+    };
   }, [scores]);
 
   const geometry = useMemo(
@@ -106,9 +125,12 @@ export function AxisRadar({ scores, labels }: AxisRadarProps) {
         <polygon className="radarShape" points={points} />
 
         {geometry.map((point, index) => (
-          <g className="radarVertex" key={point.axis} style={{ animationDelay: `${index * 70}ms` }}>
+          <g
+            className="radarVertex"
+            key={point.axis}
+            style={{ animationDelay: `${RADAR_DRAW_DELAY_MS + index * 70}ms` }}
+          >
             <line className="radarValueLine" x1={center} y1={center} x2={point.x} y2={point.y} />
-            <circle className="radarVertexDot" cx={point.x} cy={point.y} r="4.5" />
             <text
               className="radarLabel"
               x={point.labelX}
