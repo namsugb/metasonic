@@ -23,7 +23,7 @@ export default function Home() {
     });
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [flow.step, flow.quickPage, flow.branchPage]);
+  }, [flow.step]);
 
   return (
     <main ref={shellRef} className={`appShell${flow.step === "start" ? " startShell" : ""}`}>
