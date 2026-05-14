@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AxisRadar } from "@/components/results/AxisRadar";
-import type { RecommendationResult } from "@/lib/recommendation/types";
+import type { ModeId, RecommendationResult } from "@/lib/recommendation/types";
 import type { SaveRecommendationState } from "@/lib/supabase/saveRecommendation";
 
 interface ResultsScreenProps {
@@ -11,10 +11,25 @@ interface ResultsScreenProps {
   onReset: () => void;
 }
 
+const RESULT_SUMMARY_BY_MODE: Record<ModeId, string> = {
+  whitening: "칙칙함과 색소 흔적이 눈에 띄는 상태입니다. Whitening 모드를 사용하세요.",
+  wrinkles: "피부 결이 건조하고 잔주름 케어가 필요한 상태입니다. Wrinkles 모드를 사용하세요.",
+  lifting: "탄력 저하와 처짐 신호가 함께 보이는 상태입니다. Lifting 모드를 사용하세요.",
+  tightening: "모공과 탄력 균형을 단단하게 잡아야 하는 상태입니다. Tightening 모드를 사용하세요.",
+  rejuvenation: "회복 리듬과 생기 보정이 필요한 상태입니다. Rejuvenation 모드를 사용하세요.",
+  sonophoresis: "건조함과 흡수 저하 신호가 있는 상태입니다. Sonophoresis 모드를 사용하세요.",
+  trouble: "유분 균형과 트러블 신호를 정돈해야 하는 상태입니다. Trouble 모드를 사용하세요.",
+  acne: "반복되는 트러블을 집중적으로 관리해야 하는 상태입니다. Acne 모드를 사용하세요.",
+  redness: "붉어짐과 열감 반응을 차분히 낮춰야 하는 상태입니다. Redness Care 모드를 사용하세요.",
+  atopic: "민감함과 장벽 불안정이 함께 느껴지는 상태입니다. Atopic Care 모드를 사용하세요.",
+  scarCare: "오래 남은 자국과 피부 흔적을 정리해야 하는 상태입니다. Scar Care 모드를 사용하세요.",
+};
+
 export function ResultsScreen({ result, saveState, onReset }: ResultsScreenProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const axisEntries = Object.entries(result.axisScores).sort(([, a], [, b]) => b - a).slice(0, 3);
   const canCarousel = result.recommendations.length > 1;
+  const firstRecommendation = result.recommendations[0];
 
   function moveRecommendation(direction: -1 | 1) {
     setActiveIndex((current) => {
@@ -34,8 +49,9 @@ export function ResultsScreen({ result, saveState, onReset }: ResultsScreenProps
 
         <section className="todaySummary">
           <p>
-            유난히 피부는 열감과 회복 지연 신호가 감지되었어요.
-            강한 관리보다는 <strong>진정과 회복 중심의 케어</strong>가 필요해요.
+            {firstRecommendation
+              ? RESULT_SUMMARY_BY_MODE[firstRecommendation.modeId]
+              : "현재 답변을 바탕으로 추천 모드를 정리하고 있어요."}
           </p>
         </section>
 
@@ -119,7 +135,7 @@ export function ResultsScreen({ result, saveState, onReset }: ResultsScreenProps
         <section className="lightResultPanel">
           <div className="panelHeader">
             <h3>피부 상태 6축 분석</h3>
-            <span>{result.confidenceScore}</span>
+            {/* <span>{result.confidenceScore}</span> */}
           </div>
           <AxisRadar scores={result.axisScores} labels={result.axisLabels} />
         </section>
@@ -141,7 +157,7 @@ export function ResultsScreen({ result, saveState, onReset }: ResultsScreenProps
               ))}
             </div>
           ) : (
-            <p>명시적으로 제외된 모드는 없습니다. 권장 출력부터 천천히 확인해주세요.</p>
+            <p>명시적으로 제외된 모드는 없습니다. <br />권장 출력부터 천천히 확인해주세요.</p>
           )}
         </section>
       </aside>

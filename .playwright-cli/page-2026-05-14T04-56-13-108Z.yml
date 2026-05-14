@@ -1,0 +1,35 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic "개발용 단계 이동" [ref=e3]:
+      - button "이전 단계" [ref=e4] [cursor=pointer]
+      - generic [ref=e5]: quick
+      - button "다음 단계" [ref=e6] [cursor=pointer]
+    - generic [ref=e49]:
+      - button "이전" [ref=e51] [cursor=pointer]: ←
+      - generic [ref=e52]:
+        - paragraph [ref=e53]: QUICK CHECK
+        - heading "최근 피부 신호를 알려주세요" [level=2] [ref=e54]
+      - generic "추천 문답 진행 단계" [ref=e55]
+      - article [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]: Q2
+          - heading "세안, 마스크, 온도 변화 후 붉은기가 오래 남았나요?" [level=3] [ref=e88]
+        - radiogroup "Q2" [ref=e89]:
+          - generic [ref=e90] [cursor=pointer]:
+            - radio "없어요"
+            - strong [ref=e93]: 없어요
+          - generic [ref=e94] [cursor=pointer]:
+            - radio "조금 느껴져요"
+            - strong [ref=e97]: 조금 느껴져요
+          - generic [ref=e98] [cursor=pointer]:
+            - radio "보통이에요"
+            - strong [ref=e101]: 보통이에요
+          - generic [ref=e102] [cursor=pointer]:
+            - radio "꽤 느껴져요"
+            - strong [ref=e105]: 꽤 느껴져요
+          - generic [ref=e106] [cursor=pointer]:
+            - radio "강하게 느껴져요"
+            - strong [ref=e109]: 강하게 느껴져요
+  - button "Open Next.js Dev Tools" [ref=e21] [cursor=pointer]:
+    - img [ref=e22]
+  - alert [ref=e25]

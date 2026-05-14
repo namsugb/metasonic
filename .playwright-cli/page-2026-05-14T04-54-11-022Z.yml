@@ -1,0 +1,43 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic "개발용 단계 이동" [ref=e3]:
+      - button "이전 단계" [ref=e4] [cursor=pointer]
+      - generic [ref=e5]: profile
+      - button "다음 단계" [ref=e6] [cursor=pointer]
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - paragraph [ref=e29]: START
+        - heading "프로필 입력" [level=2] [ref=e30]
+        - paragraph [ref=e31]: 결과 저장과 이벤트 상담을 위한 필수 정보입니다.
+      - generic [ref=e32]:
+        - generic [ref=e33]: 이름
+        - textbox "이름" [ref=e34]:
+          - /placeholder: 이름을 입력해주세요
+      - generic [ref=e35]:
+        - generic [ref=e36]: 연락처
+        - textbox "연락처" [ref=e37]:
+          - /placeholder: 010-0000-0000
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - generic [ref=e40]: 연령대
+          - combobox "연령대" [ref=e41]:
+            - option "선택" [selected]
+            - option "10대"
+            - option "20대"
+            - option "30대"
+            - option "40대"
+            - option "50대 이상"
+        - generic [ref=e42]:
+          - generic [ref=e43]: 성별
+          - combobox "성별" [ref=e44]:
+            - option "선택" [selected]
+            - option "여성"
+            - option "남성"
+            - option "응답 안 함"
+      - generic [ref=e45]:
+        - checkbox "이벤트 상담 및 결과 저장 목적의 개인정보 수집에 동의합니다." [ref=e46]
+        - generic [ref=e47]: 이벤트 상담 및 결과 저장 목적의 개인정보 수집에 동의합니다.
+      - button "Quick Check 시작" [disabled] [ref=e48]
+  - button "Open Next.js Dev Tools" [ref=e21] [cursor=pointer]:
+    - img [ref=e22]
+  - alert [ref=e25]

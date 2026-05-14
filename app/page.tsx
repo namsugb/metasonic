@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { BranchIntro } from "@/components/forms/BranchIntro";
 import { BranchStep } from "@/components/forms/BranchStep";
 import { ContextStep } from "@/components/forms/ContextStep";
@@ -12,9 +13,20 @@ import { useRecommendationFlow } from "@/hooks/useRecommendationFlow";
 
 export default function Home() {
   const flow = useRecommendationFlow();
+  const shellRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      shellRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      shellRef.current?.querySelector<HTMLElement>(".screen")?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [flow.step, flow.quickPage, flow.branchPage]);
 
   return (
-    <main className={`appShell${flow.step === "start" ? " startShell" : ""}`}>
+    <main ref={shellRef} className={`appShell${flow.step === "start" ? " startShell" : ""}`}>
       <div className="devStepControls" aria-label="개발용 단계 이동">
         <button type="button" onClick={flow.devGoPrevious}>
           이전 단계

@@ -20,7 +20,7 @@ export function GoalStep({ goals, canContinue, onToggleGoal, onBack, onNext }: G
 
       <div className="screenHeader">
         <p className="stepEyebrow">GOALS</p>
-        <h2>가장 신경 쓰이는 고민을 골라주세요</h2>
+        <h2>신경 쓰이는 고민들을 골라 주세요</h2>
       </div>
 
       <div className="goalGrid">
