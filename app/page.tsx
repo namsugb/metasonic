@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <main ref={shellRef} className={`appShell${flow.step === "start" ? " startShell" : ""}`}>
-      <div className="devStepControls" aria-label="개발용 단계 이동">
+      {/* <div className="devStepControls" aria-label="개발용 단계 이동">
         <button type="button" onClick={flow.devGoPrevious}>
           이전 단계
         </button>
@@ -35,7 +35,7 @@ export default function Home() {
         <button type="button" onClick={flow.devGoNext}>
           다음 단계
         </button>
-      </div>
+      </div> */}
 
       {flow.step === "start" ? <StartHero onStart={() => flow.setStep("profile")} /> : null}
 
